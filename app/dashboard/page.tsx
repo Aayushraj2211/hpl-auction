@@ -1,0 +1,90 @@
+export const dynamic = 'force-dynamic';
+
+import { PageHeader } from "@/components/PageHeader";
+import { createClient } from "@/utils/supabase/server";
+
+export default async function Dashboard() {
+  const supabase = createClient();
+  
+  // Fetch real data for dashboard metrics
+  const { data: houses } = await supabase.from('houses').select('*').order('name');
+  const { count: studentsCount } = await supabase.from('students').select('*', { count: 'exact', head: true });
+  
+  const houseList = houses || [];
+
+  return (
+    <div className="flex flex-col h-full">
+      <PageHeader title="Dashboard" />
+      <div className="p-6 space-y-8 flex-1 bg-background">
+        
+        {/* Metric Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-card border-l-4 border-l-primary p-6 clip-diagonal relative group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1 relative z-10">Total Houses</h3>
+            <p className="text-5xl font-display font-black text-foreground relative z-10">{houseList.length}</p>
+          </div>
+          
+          <div className="bg-card border-l-4 border-l-accent p-6 clip-diagonal relative group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1 relative z-10">Total Students</h3>
+            <p className="text-5xl font-display font-black text-foreground relative z-10">{studentsCount || 0}</p>
+          </div>
+          
+          <div className="bg-card border-l-4 border-l-orange-500 p-6 clip-diagonal relative group overflow-hidden">
+             <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-1 relative z-10">Sports</h3>
+            <p className="text-5xl font-display font-black text-foreground relative z-10">1</p>
+          </div>
+          
+          <div className="bg-card border-l-4 border-l-purple-500 p-6 clip-diagonal relative group overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-muted-foreground mb-3 relative z-10">Auction Status</h3>
+            <div className="relative z-10">
+              <span className="text-lg font-bold uppercase tracking-widest px-3 py-1 bg-green-500/20 text-green-400 border border-green-500/50 clip-angled inline-block">
+                Active
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Full Width Layout */}
+        <div className="grid grid-cols-1 gap-8">
+          
+          <div className="bg-card p-0 clip-angled relative border border-border/50">
+            <div className="bg-muted/80 p-4 border-b border-border">
+              <h2 className="text-xl font-display font-bold uppercase tracking-wider text-foreground">House Overview</h2>
+            </div>
+            <div className="p-4 space-y-1">
+              {houseList.length > 0 ? (
+                houseList.map((house) => (
+                  <div key={house.id} className="flex justify-between items-center p-3 bg-background hover:bg-muted/50 transition-colors border-l-2 border-transparent hover:border-primary">
+                    <span className="font-bold text-foreground uppercase tracking-wide">{house.name}</span>
+                    <span className="font-display font-bold text-xl text-primary tracking-wider">₹{house.budget.toLocaleString()}</span>
+                  </div>
+                ))
+              ) : (
+                <div className="p-3 text-muted-foreground font-bold uppercase tracking-widest text-sm">No houses found in database.</div>
+              )}
+            </div>
+          </div>
+
+
+          
+        </div>
+
+        {/* Activity Log */}
+        <div className="bg-card p-0 border border-border/50">
+          <div className="bg-muted/80 p-4 border-b border-border border-l-4 border-l-primary">
+            <h2 className="text-xl font-display font-bold uppercase tracking-wider text-foreground">Recent Auction Activity</h2>
+          </div>
+          <div className="text-center py-12 text-muted-foreground font-medium tracking-widest uppercase text-sm flex flex-col items-center justify-center">
+            <div className="w-16 h-1 bg-muted-foreground/20 mb-4 rounded-full"></div>
+            No activity yet.
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  );
+}

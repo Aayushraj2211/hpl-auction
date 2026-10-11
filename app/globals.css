@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  
+  --border: #e2e8f0;
+  
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  
+  --accent: #16a34a;
+}
+
+.dark {
+  --background: #090e17; /* Very dark navy/slate */
+  --foreground: #f8fafc;
+  
+  --primary: #2563eb; /* Vibrant Electric Blue */
+  --primary-foreground: #ffffff;
+  
+  --muted: #131c2a; /* Slightly lighter than background */
+  --muted-foreground: #94a3b8;
+  
+  --border: #1e293b;
+  
+  --card: #0d131f;
+  --card-foreground: #f8fafc;
+  
+  --accent: #22c55e; /* Neon Green */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@layer utilities {
+  .clip-diagonal {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+  }
+  .clip-angled {
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+  }
+  .glow-primary {
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+  } 
+  .glow-accent {
+    box-shadow: 0 4px 20px rgba(22, 163, 74, 0.25);
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.3);
+    border-radius: 3px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.5);
+  }
+}
